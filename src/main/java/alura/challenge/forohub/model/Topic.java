@@ -1,5 +1,6 @@
 package alura.challenge.forohub.model;
 
+import alura.challenge.forohub.dto.UpdateTopicDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -18,7 +19,7 @@ import java.util.Set;
 public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idTopic;
+    private Long idTopic;
     private String title;
     private String message;
     private LocalDateTime date;
@@ -26,9 +27,19 @@ public class Topic {
     @ManyToOne
     @JoinColumn(name = "idUser")
     private User author;
-    @ManyToOne
-    @JoinColumn(name = "idCourse")
-    private Course course;
     @OneToMany(mappedBy = "topic")
     private Set<Response> responses;
+
+    public void update(UpdateTopicDTO updateTopicDTO) {
+        if (updateTopicDTO.title() != null) {
+            this.title = updateTopicDTO.title();
+        }
+        if (updateTopicDTO.message() != null) {
+            this.message = updateTopicDTO.message();
+        }
+    }
+
+    public void delete() {
+        this.status = false;
+    }
 }

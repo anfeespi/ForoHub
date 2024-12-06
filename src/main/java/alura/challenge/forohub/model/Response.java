@@ -1,5 +1,6 @@
 package alura.challenge.forohub.model;
 
+import alura.challenge.forohub.dto.ResponseDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 public class Response {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idResponse;
+    private Long idResponse;
     private String message;
     @ManyToOne
     @JoinColumn(name = "idTopic")
@@ -27,4 +28,16 @@ public class Response {
     @JoinColumn(name = "idUser")
     private User author;
     private String solution;
+
+    public void update(ResponseDTO dto) {
+        if (dto.message() != null && !dto.message().isEmpty()) {
+            this.message = dto.message();
+        }
+        if (dto.solution() != null && !dto.solution().isEmpty()) {
+            this.solution = dto.solution();
+        }
+        if (dto.createdAt() != null) {
+            this.createdAt = dto.createdAt();
+        }
+    }
 }
